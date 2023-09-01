@@ -69,12 +69,16 @@ const useApp = () => {
   }, []);
 
   const evaluateAnswer = useCallback(() => {
-    setSecondValueForCalculation(null);
     setValue(prevValue =>
       formatNumber(applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton)),
     );
-    setSelectedButton("");
   }, [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation, selectedButton]);
+
+  const onEqualsPress = useCallback(() => {
+    setSecondValueForCalculation(null);
+    evaluateAnswer();
+    setSelectedButton("");
+  }, [evaluateAnswer]);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
@@ -90,26 +94,33 @@ const useApp = () => {
     setValue(prevValue => (Number(prevValue) / 100).toString());
   }, []);
 
-  const onOperatorSelect = useCallback((selectedButton: string) => {
-    let selectedButtonText = "";
-    switch (selectedButton) {
-      case "X":
-        selectedButtonText = "multiply";
-        break;
-      case "./.":
-        selectedButtonText = "divide";
-        break;
-      case "-":
-        selectedButtonText = "minus";
-        break;
-      case "+":
-        selectedButtonText = "plus";
-        break;
-      default:
-        break;
-    }
-    setSelectedButton(selectedButtonText);
-  }, []);
+  const onOperatorSelect = useCallback(
+    (selectedButton: string) => {
+      if (secondValueForCalculation) {
+        evaluateAnswer();
+        setSecondValueForCalculation(null);
+      }
+      let selectedButtonText = "";
+      switch (selectedButton) {
+        case "X":
+          selectedButtonText = "multiply";
+          break;
+        case "./.":
+          selectedButtonText = "divide";
+          break;
+        case "-":
+          selectedButtonText = "minus";
+          break;
+        case "+":
+          selectedButtonText = "plus";
+          break;
+        default:
+          break;
+      }
+      setSelectedButton(selectedButtonText);
+    },
+    [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation],
+  );
 
   const ButtonConfig = {
     ac: {
@@ -247,7 +258,7 @@ const useApp = () => {
       buttonColor: secondary,
       textColor: white,
       isBig: false,
-      action: evaluateAnswer,
+      action: onEqualsPress,
     },
   };
 
