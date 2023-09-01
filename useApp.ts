@@ -39,13 +39,38 @@ const useApp = () => {
     [numberWithCommas, secondValueForCalculation, selectedButton, value]
   );
 
+  const applyCorrectOperator = useCallback(
+    (firstValue: number, secondValue: number, selectedButton: string) => {
+      console.log("selectedButton", selectedButton);
+      console.log("firstValue", firstValue);
+      console.log("secondValue", secondValue);
+      switch (selectedButton) {
+        case "multiply":
+          return (firstValue * secondValue).toString();
+        case "divide":
+          return (firstValue / secondValue).toString();
+        case "minus":
+          return (firstValue - secondValue).toString();
+        case "plus":
+          return (firstValue + secondValue).toString();
+        default:
+          return "0";
+      }
+    },
+    []
+  );
+
   const evaluateAnswer = useCallback(() => {
-    setSelectedButton("");
     setSecondValueForCalculation(null);
     setValue((prevValue) =>
-      (Number(prevValue) * Number(secondValueForCalculation)).toString()
+      applyCorrectOperator(
+        Number(prevValue),
+        Number(secondValueForCalculation),
+        selectedButton
+      )
     );
-  }, [secondValueForCalculation]);
+    setSelectedButton("");
+  }, [applyCorrectOperator, secondValueForCalculation, selectedButton]);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
