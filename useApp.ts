@@ -14,15 +14,22 @@ const useApp = () => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  const onAcSelect = useCallback(() => {
+    setValue("0");
+  }, []);
+
   const onOperatorSelect = useCallback((selectedButton: string) => {
     setSelectedButton(selectedButton);
   }, []);
 
-  const onNumberSelect = useCallback((numberPressed: string) => {
-    const newValue = value + numberPressed;
+  const onNumberSelect = useCallback(
+    (numberPressed: string) => {
+      const newValue = value === "0" ? numberPressed : value + numberPressed;
 
-    setValue(numberWithCommas(newValue));
-  }, []);
+      setValue(newValue);
+    },
+    [value]
+  );
 
   const ButtonConfig = {
     ac: {
@@ -30,7 +37,7 @@ const useApp = () => {
       buttonColor: light,
       textColor: primary,
       isBig: false,
-      action: onOperatorSelect,
+      action: onAcSelect,
     },
     plusMinus: {
       text: "+/-",
