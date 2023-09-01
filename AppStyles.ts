@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 
-const primary = "#000000";
-
 export const useStyles = (valueLength: number) => {
   const getValueFontSize = useCallback(() => {
     switch (valueLength) {
@@ -22,7 +20,7 @@ export const useStyles = (valueLength: number) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: primary,
+      backgroundColor: "black",
       alignItems: "center",
       justifyContent: "center",
       paddingHorizontal: 10,

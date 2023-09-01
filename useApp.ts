@@ -126,7 +126,7 @@ const useApp = () => {
       }
       setSelectedButton(selectedButtonText);
     },
-    [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation],
+    [evaluateAnswer, secondValueForCalculation],
   );
 
   const ButtonConfig = {
