@@ -10,9 +10,9 @@ const useApp = () => {
   const [value, setValue] = useState("0");
   const [selectedButton, setSelectedButton] = useState("");
 
-  const numberWithCommas = (x: string) => {
+  const numberWithCommas = useCallback((x: string) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+  }, []);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
@@ -41,7 +41,7 @@ const useApp = () => {
         setValue(numberWithCommas(newValue));
       }
     },
-    [value]
+    [numberWithCommas, value]
   );
 
   const ButtonConfig = {
