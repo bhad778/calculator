@@ -48,6 +48,11 @@ const useApp = () => {
           newValue = formatNumber(newValue);
         }
 
+        // do not remove commas when adding decimal
+        if (numberPressed === ".") {
+          newValue = formatNumber(newValue) + ".";
+        }
+
         setSecondValueForCalculation(newValue);
         setMostRecentSecondValue(newValue);
       } else if (value.length < 11) {
@@ -70,6 +75,7 @@ const useApp = () => {
           newValue = formatNumber(newValue);
         }
 
+        // do not remove commas when adding decimal
         if (numberPressed === ".") {
           newValue = formatNumber(newValue) + ".";
         }
