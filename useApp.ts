@@ -70,6 +70,10 @@ const useApp = () => {
           newValue = formatNumber(newValue);
         }
 
+        if (numberPressed === ".") {
+          newValue = formatNumber(newValue) + ".";
+        }
+
         setValue(newValue);
       }
     },
