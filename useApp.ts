@@ -18,7 +18,7 @@ const useApp = () => {
   }, []);
 
   const formatNumber = useCallback((x: string) => {
-    return Number(x).toLocaleString(undefined, { maximumFractionDigits: 2 });
+    return Number(x).toLocaleString(undefined);
   }, []);
 
   const removeCommas = useCallback((x: string | null) => {
@@ -30,7 +30,7 @@ const useApp = () => {
   const onNumberSelect = useCallback(
     (numberPressed: string) => {
       if (selectedButton) {
-        if (numberPressed === "." && secondValueForCalculation?.indexOf(".") != -1) {
+        if (numberPressed === "." && secondValueForCalculation?.indexOf(".") != -1 && secondValueForCalculation != null) {
           return;
         }
         let newValue = secondValueForCalculation === null ? numberPressed : removeCommas(secondValueForCalculation) + numberPressed;
@@ -39,8 +39,17 @@ const useApp = () => {
           newValue = "0.";
         }
 
-        setSecondValueForCalculation(addCommas(newValue));
-        setMostRecentSecondValue(addCommas(newValue));
+        // if you input decimal when value is 0 do not format number
+        // if you input decimal say, 55 then decimal do not format number
+        if (
+          !(newValue != "0" && formatNumber(newValue) === "0") &&
+          !(newValue.indexOf(".") != -1 && formatNumber(newValue).indexOf(".") === -1)
+        ) {
+          newValue = formatNumber(newValue);
+        }
+
+        setSecondValueForCalculation(newValue);
+        setMostRecentSecondValue(newValue);
       } else if (value.length < 11) {
         let newValue = value === "0" ? numberPressed : removeCommas(value) + numberPressed;
 
@@ -52,10 +61,19 @@ const useApp = () => {
           return;
         }
 
-        setValue(addCommas(newValue));
+        // if you input decimal when value is 0 do not format number
+        // if you input decimal say, 55 then decimal do not format number
+        if (
+          !(newValue != "0" && formatNumber(newValue) === "0") &&
+          !(newValue.indexOf(".") != -1 && formatNumber(newValue).indexOf(".") === -1)
+        ) {
+          newValue = formatNumber(newValue);
+        }
+
+        setValue(newValue);
       }
     },
-    [addCommas, removeCommas, secondValueForCalculation, selectedButton, value],
+    [formatNumber, removeCommas, secondValueForCalculation, selectedButton, value],
   );
 
   const applyCorrectOperator = useCallback((firstValue: number, secondValue: number, selectedButton: string) => {
@@ -75,11 +93,17 @@ const useApp = () => {
 
   const evaluateAnswer = useCallback(() => {
     if (value && mostRecentSecondValue) {
-      setValue(prevValue =>
-        formatNumber(
-          applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(mostRecentSecondValue)), mostRecentSelectedButton),
-        ),
-      );
+      setValue(prevValue => {
+        let newValue = applyCorrectOperator(
+          Number(removeCommas(prevValue)),
+          Number(removeCommas(mostRecentSecondValue)),
+          mostRecentSelectedButton,
+        );
+        if (!(newValue != "0" && formatNumber(newValue) === "0")) {
+          newValue = formatNumber(newValue);
+        }
+        return newValue;
+      });
     }
   }, [applyCorrectOperator, formatNumber, mostRecentSecondValue, mostRecentSelectedButton, removeCommas, value]);
 
@@ -93,9 +117,9 @@ const useApp = () => {
     setValue("0");
     setSelectedButton("");
     setSecondValueForCalculation(null);
-    setMostRecentSecondValue(addCommas(""));
-    setMostRecentSelectedButton(addCommas(""));
-  }, []);
+    setMostRecentSecondValue(formatNumber(""));
+    setMostRecentSelectedButton(formatNumber(""));
+  }, [formatNumber]);
 
   const onPlusMinusSelect = useCallback(() => {
     setValue(prevValue => (Number(prevValue) * -1).toString());
