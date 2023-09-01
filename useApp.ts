@@ -28,6 +28,9 @@ const useApp = () => {
   const onNumberSelect = useCallback(
     (numberPressed: string) => {
       if (selectedButton) {
+        if (numberPressed === "." && secondValueForCalculation?.indexOf(".") != -1) {
+          return;
+        }
         setSecondValueForCalculation(value);
         let newValue = secondValueForCalculation === null ? numberPressed : removeCommas(secondValueForCalculation) + numberPressed;
 
@@ -43,6 +46,10 @@ const useApp = () => {
           newValue = "0.";
         }
 
+        if (numberPressed === "." && value.indexOf(".") != -1) {
+          return;
+        }
+
         setValue(addCommas(newValue));
       }
     },
@@ -50,10 +57,6 @@ const useApp = () => {
   );
 
   const applyCorrectOperator = useCallback((firstValue: number, secondValue: number, selectedButton: string) => {
-    console.log("firstValue", firstValue);
-    console.log("secondValue", secondValue);
-    console.log("selectedButton", selectedButton);
-    console.log("(firstValue * secondValue).toString()", (firstValue * secondValue).toString());
     switch (selectedButton) {
       case "multiply":
         return (firstValue * secondValue).toString();

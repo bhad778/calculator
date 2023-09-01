@@ -25,7 +25,7 @@ export const useStyles = (valueLength: number) => {
       backgroundColor: primary,
       alignItems: "center",
       justifyContent: "center",
-      paddingHorizontal: 15,
+      paddingHorizontal: 10,
     },
     valueSection: {
       height: "37%",
