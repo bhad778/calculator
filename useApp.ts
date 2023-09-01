@@ -18,6 +18,10 @@ const useApp = () => {
     setValue("0");
   }, []);
 
+  const onPlusMinusSelect = useCallback(() => {
+    setValue((prevValue) => (Number(prevValue) * -1).toString());
+  }, []);
+
   const onOperatorSelect = useCallback((selectedButton: string) => {
     setSelectedButton(selectedButton);
   }, []);
@@ -26,7 +30,7 @@ const useApp = () => {
     (numberPressed: string) => {
       const newValue = value === "0" ? numberPressed : value + numberPressed;
 
-      setValue(newValue);
+      setValue(numberWithCommas(newValue));
     },
     [value]
   );
@@ -44,7 +48,7 @@ const useApp = () => {
       buttonColor: light,
       textColor: primary,
       isBig: false,
-      action: onOperatorSelect,
+      action: onPlusMinusSelect,
     },
     percent: {
       text: "%",

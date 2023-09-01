@@ -142,7 +142,6 @@ module.exports = {
     "no-console": ["off"],
     "no-useless-escape": ["error"],
     "no-shadow-restricted-names": ["error"],
-    "arrow-parens": ["error", "as-needed"],
     /*"arrow-body-style": [
       "error",
       "as-needed"
