@@ -10,6 +10,8 @@ const useApp = () => {
   const [value, setValue] = useState("0");
   const [secondValueForCalculation, setSecondValueForCalculation] = useState<string | null>(null);
   const [selectedButton, setSelectedButton] = useState("");
+  const [mostRecentSelectedButton, setMostRecentSelectedButton] = useState("");
+  const [mostRecentSecondValue, setMostRecentSecondValue] = useState("");
 
   const addCommas = useCallback((x: string) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -31,7 +33,6 @@ const useApp = () => {
         if (numberPressed === "." && secondValueForCalculation?.indexOf(".") != -1) {
           return;
         }
-        setSecondValueForCalculation(value);
         let newValue = secondValueForCalculation === null ? numberPressed : removeCommas(secondValueForCalculation) + numberPressed;
 
         if (newValue === ".") {
@@ -39,6 +40,7 @@ const useApp = () => {
         }
 
         setSecondValueForCalculation(addCommas(newValue));
+        setMostRecentSecondValue(addCommas(newValue));
       } else if (value.length < 11) {
         let newValue = value === "0" ? numberPressed : removeCommas(value) + numberPressed;
 
@@ -72,14 +74,14 @@ const useApp = () => {
   }, []);
 
   const evaluateAnswer = useCallback(() => {
-    if (value && secondValueForCalculation) {
+    if (value && mostRecentSecondValue) {
       setValue(prevValue =>
         formatNumber(
-          applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton),
+          applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(mostRecentSecondValue)), mostRecentSelectedButton),
         ),
       );
     }
-  }, [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation, selectedButton, value]);
+  }, [applyCorrectOperator, formatNumber, mostRecentSecondValue, mostRecentSelectedButton, removeCommas, value]);
 
   const onEqualsPress = useCallback(() => {
     setSecondValueForCalculation(null);
@@ -91,6 +93,8 @@ const useApp = () => {
     setValue("0");
     setSelectedButton("");
     setSecondValueForCalculation(null);
+    setMostRecentSecondValue(addCommas(""));
+    setMostRecentSelectedButton(addCommas(""));
   }, []);
 
   const onPlusMinusSelect = useCallback(() => {
@@ -125,6 +129,7 @@ const useApp = () => {
           break;
       }
       setSelectedButton(selectedButtonText);
+      setMostRecentSelectedButton(selectedButtonText);
     },
     [evaluateAnswer, secondValueForCalculation],
   );
