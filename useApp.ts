@@ -10,11 +10,17 @@ const useApp = () => {
   const [value, setValue] = useState("0");
   const [secondValueForCalculation, setSecondValueForCalculation] = useState<
     string | null
-  >("0");
+  >(null);
   const [selectedButton, setSelectedButton] = useState("");
 
-  const numberWithCommas = useCallback((x: string) => {
+  const addCommas = useCallback((x: string) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }, []);
+
+  const removeCommas = useCallback((x: string | null) => {
+    if (x != null) {
+      return x.replace(/,/g, "");
+    }
   }, []);
 
   const onNumberSelect = useCallback(
@@ -24,26 +30,21 @@ const useApp = () => {
         const newValue =
           secondValueForCalculation === null
             ? numberPressed
-            : secondValueForCalculation.replace(/,/g, "") + numberPressed;
+            : removeCommas(secondValueForCalculation) + numberPressed;
 
-        setSecondValueForCalculation(numberWithCommas(newValue));
+        setSecondValueForCalculation(addCommas(newValue));
       } else if (value.length < 11) {
         const newValue =
-          value === "0"
-            ? numberPressed
-            : value.replace(/,/g, "") + numberPressed;
+          value === "0" ? numberPressed : removeCommas(value) + numberPressed;
 
-        setValue(numberWithCommas(newValue));
+        setValue(addCommas(newValue));
       }
     },
-    [numberWithCommas, secondValueForCalculation, selectedButton, value]
+    [addCommas, removeCommas, secondValueForCalculation, selectedButton, value]
   );
 
   const applyCorrectOperator = useCallback(
     (firstValue: number, secondValue: number, selectedButton: string) => {
-      console.log("selectedButton", selectedButton);
-      console.log("firstValue", firstValue);
-      console.log("secondValue", secondValue);
       switch (selectedButton) {
         case "multiply":
           return (firstValue * secondValue).toString();
@@ -63,14 +64,22 @@ const useApp = () => {
   const evaluateAnswer = useCallback(() => {
     setSecondValueForCalculation(null);
     setValue((prevValue) =>
-      applyCorrectOperator(
-        Number(prevValue),
-        Number(secondValueForCalculation),
-        selectedButton
+      addCommas(
+        applyCorrectOperator(
+          Number(removeCommas(prevValue)),
+          Number(removeCommas(secondValueForCalculation)),
+          selectedButton
+        )
       )
     );
     setSelectedButton("");
-  }, [applyCorrectOperator, secondValueForCalculation, selectedButton]);
+  }, [
+    addCommas,
+    applyCorrectOperator,
+    removeCommas,
+    secondValueForCalculation,
+    selectedButton,
+  ]);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
