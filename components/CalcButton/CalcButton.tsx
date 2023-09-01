@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
 import { TouchableOpacity, Text } from "react-native";
 
 import { useStyles } from "./CalcButtonStyles";
@@ -24,7 +24,7 @@ const CalcButton = ({
 
   const onPressButton = useCallback(() => {
     action(title);
-  }, []);
+  }, [action, title]);
 
   return (
     <TouchableOpacity style={styles.button} onPress={onPressButton}>
@@ -33,4 +33,4 @@ const CalcButton = ({
   );
 };
 
-export default CalcButton;
+export default memo(CalcButton);
