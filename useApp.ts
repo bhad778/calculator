@@ -72,10 +72,14 @@ const useApp = () => {
   }, []);
 
   const evaluateAnswer = useCallback(() => {
-    setValue(prevValue =>
-      formatNumber(applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton)),
-    );
-  }, [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation, selectedButton]);
+    if (value && secondValueForCalculation) {
+      setValue(prevValue =>
+        formatNumber(
+          applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton),
+        ),
+      );
+    }
+  }, [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation, selectedButton, value]);
 
   const onEqualsPress = useCallback(() => {
     setSecondValueForCalculation(null);
