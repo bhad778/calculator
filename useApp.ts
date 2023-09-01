@@ -27,7 +27,24 @@ const useApp = () => {
   }, []);
 
   const onOperatorSelect = useCallback((selectedButton: string) => {
-    setSelectedButton(selectedButton);
+    let selectedButtonText = "";
+    switch (selectedButton) {
+      case "X":
+        selectedButtonText = "multiply";
+        break;
+      case "./.":
+        selectedButtonText = "divide";
+        break;
+      case "-":
+        selectedButtonText = "minus";
+        break;
+      case "+":
+        selectedButtonText = "plus";
+        break;
+      default:
+        break;
+    }
+    setSelectedButton(selectedButtonText);
   }, []);
 
   const onNumberSelect = useCallback(
@@ -43,6 +60,10 @@ const useApp = () => {
     },
     [numberWithCommas, value]
   );
+
+  const evaluateAnswer = useCallback(() => {
+    setValue((prevValue) => (Number(prevValue) / 100).toString());
+  }, []);
 
   const ButtonConfig = {
     ac: {
