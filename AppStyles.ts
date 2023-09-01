@@ -1,11 +1,24 @@
+import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 
 const primary = "#000000";
-const secondary = "#fea00a";
-const light = "#a5a5a5";
-const dark = "#333333";
 
-export const useStyles = () => {
+export const useStyles = (valueLength: number) => {
+  const getValueFontSize = useCallback(() => {
+    switch (valueLength) {
+      case 8:
+        return 75;
+      case 9:
+        return 70;
+      case 10:
+        return 65;
+      case 11:
+        return 60;
+      default:
+        return 80;
+    }
+  }, [valueLength]);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -22,7 +35,7 @@ export const useStyles = () => {
       paddingRight: 23,
     },
     value: {
-      fontSize: 80,
+      fontSize: getValueFontSize(),
       color: "white",
       marginBottom: -18,
     },

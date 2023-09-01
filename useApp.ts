@@ -32,9 +32,14 @@ const useApp = () => {
 
   const onNumberSelect = useCallback(
     (numberPressed: string) => {
-      const newValue = value === "0" ? numberPressed : value + numberPressed;
+      if (value.length < 11) {
+        const newValue =
+          value === "0"
+            ? numberPressed
+            : value.replace(/,/g, "") + numberPressed;
 
-      setValue(numberWithCommas(newValue));
+        setValue(numberWithCommas(newValue));
+      }
     },
     [value]
   );
