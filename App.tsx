@@ -2,14 +2,12 @@ import { View, Text } from "react-native";
 import { useState } from "react";
 
 import CalcButton from "./components/CalcButton/CalcButton";
-import { ButtonConfig } from "./buttonConfig";
+import useApp from "./useApp";
 import useStyles from "./AppStyles";
 
 export default function App() {
-  const [value, setValue] = useState(0);
-  const [selectedButton, setSelectedButton] = useState("");
-
   const styles = useStyles();
+  const { value, selectedButton, ButtonConfig } = useApp();
 
   return (
     <View style={styles.container}>
