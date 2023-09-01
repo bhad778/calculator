@@ -5,12 +5,13 @@ const buttonSize = 87;
 export const useStyles = (
   buttonColor: string,
   textColor: string,
-  isBig: boolean
+  isSelected: boolean,
+  isBig?: boolean
 ) => {
   const styles = StyleSheet.create({
     button: {
       height: buttonSize,
-      backgroundColor: buttonColor,
+      backgroundColor: isSelected ? "white" : buttonColor,
       borderRadius: 100,
       justifyContent: "center",
       width: isBig ? buttonSize * 2 + 14 : buttonSize,
@@ -19,7 +20,7 @@ export const useStyles = (
     },
     text: {
       fontSize: 30,
-      color: textColor,
+      color: isSelected ? buttonColor : textColor,
     },
   });
   return styles;

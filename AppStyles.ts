@@ -24,6 +24,7 @@ export const useStyles = () => {
     value: {
       fontSize: 80,
       color: "white",
+      marginBottom: -18,
     },
     buttonsSection: {
       flex: 1,
@@ -34,7 +35,7 @@ export const useStyles = () => {
       flexDirection: "row",
       columnGap: 14,
       rowGap: 14,
-      paddingTop: 30,
+      paddingTop: 25,
     },
   });
   return styles;
