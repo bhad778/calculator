@@ -22,6 +22,10 @@ const useApp = () => {
     setValue((prevValue) => (Number(prevValue) * -1).toString());
   }, []);
 
+  const onPercentSelect = useCallback(() => {
+    setValue((prevValue) => (Number(prevValue) / 100).toString());
+  }, []);
+
   const onOperatorSelect = useCallback((selectedButton: string) => {
     setSelectedButton(selectedButton);
   }, []);
@@ -55,7 +59,7 @@ const useApp = () => {
       buttonColor: light,
       textColor: primary,
       isBig: false,
-      action: onOperatorSelect,
+      action: onPercentSelect,
     },
     divide: {
       text: "./.",
