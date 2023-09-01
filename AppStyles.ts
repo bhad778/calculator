@@ -15,7 +15,7 @@ export const useStyles = () => {
       paddingHorizontal: 15,
     },
     valueSection: {
-      height: "35%",
+      height: "37%",
       width: "100%",
       alignItems: "flex-end",
       justifyContent: "flex-end",
@@ -29,6 +29,11 @@ export const useStyles = () => {
       width: "100%",
       alignItems: "center",
       justifyContent: "center",
+      backgroundColor: "green",
+      flexWrap: "wrap",
+      flexDirection: "row",
+      columnGap: 8,
+      rowGap: 8,
     },
   });
   return styles;

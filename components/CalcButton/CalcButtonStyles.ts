@@ -1,11 +1,20 @@
 import { StyleSheet } from "react-native";
 
-export const useStyles = () => {
+const buttonSize = 90;
+
+export const useStyles = (buttonColor: string, textColor: string) => {
   const styles = StyleSheet.create({
     button: {
-      height: 50,
-      width: 50,
-      backgroundColor: "red",
+      height: buttonSize,
+      width: buttonSize,
+      backgroundColor: buttonColor,
+      borderRadius: 100,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    text: {
+      fontSize: 30,
+      color: textColor,
     },
   });
   return styles;
