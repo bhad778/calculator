@@ -8,9 +8,7 @@ const white = "#ffffff";
 
 const useApp = () => {
   const [value, setValue] = useState("0");
-  const [secondValueForCalculation, setSecondValueForCalculation] = useState<
-    string | null
-  >(null);
+  const [secondValueForCalculation, setSecondValueForCalculation] = useState<string | null>(null);
   const [selectedButton, setSelectedButton] = useState("");
 
   const addCommas = useCallback((x: string) => {
@@ -27,59 +25,48 @@ const useApp = () => {
     (numberPressed: string) => {
       if (selectedButton) {
         setSecondValueForCalculation(value);
-        const newValue =
-          secondValueForCalculation === null
-            ? numberPressed
-            : removeCommas(secondValueForCalculation) + numberPressed;
+        let newValue = secondValueForCalculation === null ? numberPressed : removeCommas(secondValueForCalculation) + numberPressed;
+
+        if (newValue === ".") {
+          newValue = "0.";
+        }
 
         setSecondValueForCalculation(addCommas(newValue));
       } else if (value.length < 11) {
-        const newValue =
-          value === "0" ? numberPressed : removeCommas(value) + numberPressed;
+        let newValue = value === "0" ? numberPressed : removeCommas(value) + numberPressed;
+
+        if (newValue === ".") {
+          newValue = "0.";
+        }
 
         setValue(addCommas(newValue));
       }
     },
-    [addCommas, removeCommas, secondValueForCalculation, selectedButton, value]
+    [addCommas, removeCommas, secondValueForCalculation, selectedButton, value],
   );
 
-  const applyCorrectOperator = useCallback(
-    (firstValue: number, secondValue: number, selectedButton: string) => {
-      switch (selectedButton) {
-        case "multiply":
-          return (firstValue * secondValue).toString();
-        case "divide":
-          return (firstValue / secondValue).toString();
-        case "minus":
-          return (firstValue - secondValue).toString();
-        case "plus":
-          return (firstValue + secondValue).toString();
-        default:
-          return "0";
-      }
-    },
-    []
-  );
+  const applyCorrectOperator = useCallback((firstValue: number, secondValue: number, selectedButton: string) => {
+    switch (selectedButton) {
+      case "multiply":
+        return (firstValue * secondValue).toString();
+      case "divide":
+        return (firstValue / secondValue).toString();
+      case "minus":
+        return (firstValue - secondValue).toString();
+      case "plus":
+        return (firstValue + secondValue).toString();
+      default:
+        return "0";
+    }
+  }, []);
 
   const evaluateAnswer = useCallback(() => {
     setSecondValueForCalculation(null);
-    setValue((prevValue) =>
-      addCommas(
-        applyCorrectOperator(
-          Number(removeCommas(prevValue)),
-          Number(removeCommas(secondValueForCalculation)),
-          selectedButton
-        )
-      )
+    setValue(prevValue =>
+      addCommas(applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton)),
     );
     setSelectedButton("");
-  }, [
-    addCommas,
-    applyCorrectOperator,
-    removeCommas,
-    secondValueForCalculation,
-    selectedButton,
-  ]);
+  }, [addCommas, applyCorrectOperator, removeCommas, secondValueForCalculation, selectedButton]);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
@@ -88,11 +75,11 @@ const useApp = () => {
   }, []);
 
   const onPlusMinusSelect = useCallback(() => {
-    setValue((prevValue) => (Number(prevValue) * -1).toString());
+    setValue(prevValue => (Number(prevValue) * -1).toString());
   }, []);
 
   const onPercentSelect = useCallback(() => {
-    setValue((prevValue) => (Number(prevValue) / 100).toString());
+    setValue(prevValue => (Number(prevValue) / 100).toString());
   }, []);
 
   const onOperatorSelect = useCallback((selectedButton: string) => {

@@ -6,8 +6,7 @@ import useApp from "./useApp";
 import useStyles from "./AppStyles";
 
 export default function App() {
-  const { value, secondValueForCalculation, selectedButton, ButtonConfig } =
-    useApp();
+  const { value, secondValueForCalculation, selectedButton, ButtonConfig } = useApp();
   const styles = useStyles(value.length);
 
   return (
