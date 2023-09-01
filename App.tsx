@@ -17,7 +17,7 @@ export default function App() {
       </View>
       <View style={styles.buttonsSection}>
         {Object.values(ButtonConfig).map((buttonData, index) => {
-          return <CalcButton key={index} title={buttonData.text} buttonColor={buttonData.buttonColor} textColor={buttonData.textColor}></CalcButton>
+          return <CalcButton key={index} title={buttonData.text} buttonColor={buttonData.buttonColor} textColor={buttonData.textColor} isBig={buttonData.isBig}></CalcButton>
         })}
       </View>
     </View>

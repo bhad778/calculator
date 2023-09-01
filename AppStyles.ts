@@ -19,6 +19,7 @@ export const useStyles = () => {
       width: "100%",
       alignItems: "flex-end",
       justifyContent: "flex-end",
+      paddingRight: 23,
     },
     value: {
       fontSize: 80,
@@ -29,11 +30,11 @@ export const useStyles = () => {
       width: "100%",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "green",
       flexWrap: "wrap",
       flexDirection: "row",
-      columnGap: 8,
-      rowGap: 8,
+      columnGap: 14,
+      rowGap: 14,
+      paddingTop: 30,
     },
   });
   return styles;

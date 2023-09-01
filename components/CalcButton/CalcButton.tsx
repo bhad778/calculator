@@ -7,11 +7,12 @@ type TDateInput = {
   title: string;
   buttonColor: string;
   textColor: string;
+  isBig?: boolean;
 };
 
 
-const CalcButton = ({ title, buttonColor, textColor }: TDateInput) => {
-  const styles = useStyles(buttonColor, textColor);
+const CalcButton = ({ title, buttonColor, textColor, isBig }: TDateInput) => {
+  const styles = useStyles(buttonColor, textColor, isBig);
 
   return (
     <TouchableOpacity style={styles.button}>
