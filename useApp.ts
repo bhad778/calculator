@@ -15,6 +15,10 @@ const useApp = () => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }, []);
 
+  const formatNumber = useCallback((x: string) => {
+    return Number(x).toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }, []);
+
   const removeCommas = useCallback((x: string | null) => {
     if (x != null) {
       return x.replace(/,/g, "");
@@ -46,6 +50,10 @@ const useApp = () => {
   );
 
   const applyCorrectOperator = useCallback((firstValue: number, secondValue: number, selectedButton: string) => {
+    console.log("firstValue", firstValue);
+    console.log("secondValue", secondValue);
+    console.log("selectedButton", selectedButton);
+    console.log("(firstValue * secondValue).toString()", (firstValue * secondValue).toString());
     switch (selectedButton) {
       case "multiply":
         return (firstValue * secondValue).toString();
@@ -63,10 +71,10 @@ const useApp = () => {
   const evaluateAnswer = useCallback(() => {
     setSecondValueForCalculation(null);
     setValue(prevValue =>
-      addCommas(applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton)),
+      formatNumber(applyCorrectOperator(Number(removeCommas(prevValue)), Number(removeCommas(secondValueForCalculation)), selectedButton)),
     );
     setSelectedButton("");
-  }, [addCommas, applyCorrectOperator, removeCommas, secondValueForCalculation, selectedButton]);
+  }, [applyCorrectOperator, formatNumber, removeCommas, secondValueForCalculation, selectedButton]);
 
   const onAcSelect = useCallback(() => {
     setValue("0");
