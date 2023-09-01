@@ -40,6 +40,7 @@ const useApp = () => {
   );
 
   const evaluateAnswer = useCallback(() => {
+    setSelectedButton("");
     setSecondValueForCalculation(null);
     setValue((prevValue) =>
       (Number(prevValue) * Number(secondValueForCalculation)).toString()
