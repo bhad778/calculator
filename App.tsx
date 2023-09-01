@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+
+import CalcButton from './components/CalcButton/CalcButton';
+import useStyles from './AppStyles';
 
 export default function App() {
+  const styles = useStyles();
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <View style={styles.valueSection}>
+        <Text style={styles.value}>0</Text>
+      </View>
+      <View style={styles.buttonsSection}>
+
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
