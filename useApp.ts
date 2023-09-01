@@ -13,10 +13,6 @@ const useApp = () => {
   const [mostRecentSelectedButton, setMostRecentSelectedButton] = useState("");
   const [mostRecentSecondValue, setMostRecentSecondValue] = useState("");
 
-  const addCommas = useCallback((x: string) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }, []);
-
   const formatNumber = useCallback((x: string) => {
     return Number(x).toLocaleString(undefined);
   }, []);
