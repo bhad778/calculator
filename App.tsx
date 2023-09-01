@@ -6,13 +6,14 @@ import useApp from "./useApp";
 import useStyles from "./AppStyles";
 
 export default function App() {
-  const { value, selectedButton, ButtonConfig } = useApp();
+  const { value, secondValueForCalculation, selectedButton, ButtonConfig } =
+    useApp();
   const styles = useStyles(value.length);
 
   return (
     <View style={styles.container}>
       <View style={styles.valueSection}>
-        <Text style={styles.value}>{value}</Text>
+        <Text style={styles.value}>{secondValueForCalculation || value}</Text>
       </View>
       <View style={styles.buttonsSection}>
         {Object.entries(ButtonConfig).map(([key, value], index) => {

@@ -8,14 +8,48 @@ const white = "#ffffff";
 
 const useApp = () => {
   const [value, setValue] = useState("0");
+  const [secondValueForCalculation, setSecondValueForCalculation] = useState<
+    string | null
+  >("0");
   const [selectedButton, setSelectedButton] = useState("");
 
   const numberWithCommas = useCallback((x: string) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }, []);
 
+  const onNumberSelect = useCallback(
+    (numberPressed: string) => {
+      if (selectedButton) {
+        setSecondValueForCalculation(value);
+        const newValue =
+          secondValueForCalculation === null
+            ? numberPressed
+            : secondValueForCalculation.replace(/,/g, "") + numberPressed;
+
+        setSecondValueForCalculation(numberWithCommas(newValue));
+      } else if (value.length < 11) {
+        const newValue =
+          value === "0"
+            ? numberPressed
+            : value.replace(/,/g, "") + numberPressed;
+
+        setValue(numberWithCommas(newValue));
+      }
+    },
+    [numberWithCommas, secondValueForCalculation, selectedButton, value]
+  );
+
+  const evaluateAnswer = useCallback(() => {
+    setSecondValueForCalculation(null);
+    setValue((prevValue) =>
+      (Number(prevValue) * Number(secondValueForCalculation)).toString()
+    );
+  }, [secondValueForCalculation]);
+
   const onAcSelect = useCallback(() => {
     setValue("0");
+    setSelectedButton("");
+    setSecondValueForCalculation(null);
   }, []);
 
   const onPlusMinusSelect = useCallback(() => {
@@ -45,24 +79,6 @@ const useApp = () => {
         break;
     }
     setSelectedButton(selectedButtonText);
-  }, []);
-
-  const onNumberSelect = useCallback(
-    (numberPressed: string) => {
-      if (value.length < 11) {
-        const newValue =
-          value === "0"
-            ? numberPressed
-            : value.replace(/,/g, "") + numberPressed;
-
-        setValue(numberWithCommas(newValue));
-      }
-    },
-    [numberWithCommas, value]
-  );
-
-  const evaluateAnswer = useCallback(() => {
-    setValue((prevValue) => (Number(prevValue) / 100).toString());
   }, []);
 
   const ButtonConfig = {
@@ -201,12 +217,13 @@ const useApp = () => {
       buttonColor: secondary,
       textColor: white,
       isBig: false,
-      action: onOperatorSelect,
+      action: evaluateAnswer,
     },
   };
 
   return {
     value,
+    secondValueForCalculation,
     selectedButton,
     ButtonConfig,
   };
