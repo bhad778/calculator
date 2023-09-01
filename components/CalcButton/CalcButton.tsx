@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { TouchableOpacity, Text } from "react-native";
 
 import { useStyles } from "./CalcButtonStyles";
@@ -8,6 +8,7 @@ type TDateInput = {
   buttonColor: string;
   textColor: string;
   isSelected: boolean;
+  action: (value: string) => void;
   isBig?: boolean;
 };
 
@@ -16,12 +17,17 @@ const CalcButton = ({
   buttonColor,
   textColor,
   isSelected,
+  action,
   isBig,
 }: TDateInput) => {
   const styles = useStyles(buttonColor, textColor, isSelected, isBig);
 
+  const onPressButton = useCallback(() => {
+    action(title);
+  }, []);
+
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={onPressButton}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );

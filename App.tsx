@@ -24,6 +24,7 @@ export default function App() {
               textColor={value.textColor}
               isBig={value.isBig}
               isSelected={key === selectedButton}
+              action={value.action}
             />
           );
         })}
